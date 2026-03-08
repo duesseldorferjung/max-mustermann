@@ -4,67 +4,111 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Max Mustermann – Webentwickler</title>
-  <meta name="description" content="Portfolio, Projekte, Video und Kontakt von Max Mustermann – Webentwickler für performante, klare Websites.">
+  <meta name="description" content="Portfolio, Projekte, Video und Kontakt von Max Mustermann – inkl. passwortgeschütztem Bereich.">
   <link rel="icon" href="assets/favicon.png">
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css">
   <style>
-    /* Zusatz-Styles nur für die Video-Einbettung – konfliktarm */
+    /* -------------------------------
+       Zusätzliche, konfliktarme Styles
+       ------------------------------- */
+    /* Responsive Video-Embed */
     .video-embed {
       position: relative;
       width: 100%;
-      max-width: 900px;      /* bei Bedarf anpassen */
-      margin: 0 auto;        /* zentrieren */
-      aspect-ratio: 16 / 9;  /* moderne Browser */
+      max-width: 900px;
+      margin: 0 auto;
+      aspect-ratio: 16 / 9;   /* moderne Browser */
       border-radius: 16px;
       overflow: hidden;
       border: 1px solid var(--border, #e6e8f0);
       box-shadow: 0 10px 24px var(--shadow, rgba(0,0,0,.08));
     }
     .video-embed iframe {
-      position: absolute;
-      inset: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
-      display: block;
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      border: 0; display: block;
     }
-    /* Fallback für sehr alte Browser ohne aspect-ratio */
     @supports not (aspect-ratio: 16 / 9) {
       .video-embed { height: 0; padding-bottom: 56.25%; }
       .video-embed iframe { position: absolute; width: 100%; height: 100%; }
     }
+    /* Passwort-Gate Overlay */
+    .gate {
+      position: fixed; inset: 0;
+      display: grid; place-items: center;
+      background: color-mix(in oklab, #000 35%, transparent);
+      backdrop-filter: blur(6px) saturate(1.1);
+      z-index: 1000;
+    }
+    .gate-card{
+      width: min(94vw, 440px);
+      background: var(--surface, #fff);
+      color: var(--text, #1a1f2b);
+      border: 1px solid var(--border, #e6e8f0);
+      border-radius: 16px;
+      box-shadow: 0 16px 36px rgba(0,0,0,.18);
+      padding: 1.25rem;
+    }
+    .gate-card h1{ font-size:1.35rem; margin:.25rem 0 .5rem }
+    .muted{ color: var(--muted, #5d667a) }
+    .field{ display:grid; gap:.35rem; margin:.75rem 0 }
+    .field label{ font-size:.9rem; color: var(--muted, #5d667a) }
+    .field input{
+      padding:.65rem .7rem; border:1px solid var(--border, #e6e8f0);
+      border-radius:10px; background:var(--surface,#fff); color:var(--text,#1a1f2b)
+    }
+    .row{ display:flex; gap:.5rem; flex-wrap:wrap; align-items:center }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center;
+      padding:.65rem 1rem; border-radius:10px; border:1px solid var(--border,#e6e8f0);
+      background:var(--surface,#fff); color:var(--text,#1a1f2b);
+      cursor:pointer; text-decoration:none; box-shadow:0 6px 18px rgba(0,0,0,.08)
+    }
+    .btn.primary{ background:linear-gradient(135deg,#0bb889,#0aa57b); border:none; color:#081317 }
+    .error{ color:#c62828; font-size:.9rem; margin:.25rem 0 .25rem; display:none }
+    .hidden{ display:none !important }
+    /* Layout-Utilities (falls styles.css minimal ist) */
+    .container{max-width:1100px;margin:0 auto;padding:0 1.25rem}
+    .section{padding:2rem 0}
+    .section.alt{background:color-mix(in oklab, var(--surface, #fff) 92%, var(--bg, #f7f7fb))}
+    .hero{padding:4.5rem 0 2.5rem}
+    .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:2rem;align-items:center}
+    .hero h1{font-size:clamp(1.9rem,3.2vw,3rem);line-height:1.15;margin:0 0 .75rem}
+    .lead{color:var(--muted,#5d667a);font-size:1.08rem;margin:0 0 1.25rem}
+    @media (max-width: 980px){ .hero-grid{grid-template-columns:1fr} }
   </style>
 </head>
 <body>
   <header class="site-header">
-    <div class="container nav">
-      <a href="#top" class="logo" aria-label="Startseite">MM</a>
-      <nav class="main-nav" aria-label="Hauptnavigation">
+    <div class="container nav" style="display:flex;align-items:center;justify-content:space-between;height:64px;border-bottom:1px solid var(--border,#e6e8f0)">
+      <a href="#top" class="logo" aria-label="Startseite" style="display:inline-flex;width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#0bb889,#0aa57b);align-items:center;justify-content:center;color:#071018;font-weight:800;text-decoration:none">MM</a>
+      <nav class="main-nav" aria-label="Hauptnavigation" style="display:flex;gap:1rem">
         <a href="#about">Über mich</a>
-        <a href="#services">Leistungen</a>
         <a href="#projects">Projekte</a>
+        <a href="#protected">Geschützt</a>
         <a href="#contact">Kontakt</a>
       </nav>
-      <button id="themeToggle" class="btn icon" aria-pressed="false" aria-label="Design umschalten (Hell/Dunkel)">🌙</button>
+      <button id="themeToggle" class="btn" aria-pressed="false" aria-label="Design umschalten (Hell/Dunkel)">🌙</button>
     </div>
   </header>
 
   <main id="top">
-    <!-- HERO ganz oben mit Video (anstelle des Bildes) -->
+    <!-- HERO mit Video oben -->
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-copy">
           <h1>Hallo, ich bin <span class="accent">Max Mustermann</span>.</h1>
           <p class="lead">Ich entwickle klare, performante Websites & kleine Web‑Apps – mit Fokus auf Nutzererlebnis und sauberen Code.</p>
-          <div class="cta">
+          <div class="row">
             <a class="btn primary" href="#projects">Projekte ansehen</a>
-            <a class="btn" href="assets/lebenslauf.pdf" target="__blank" rel="noopener">Lebenslauf</a>
+            <a class="btn" href="assets/lebenslauf.pdf" target="_blank" rel="noopener">Lebenslauf</a>
           </div>
         </div>
         <div class="hero-media">
+          <!-- Autoplay stumm (sofern Anbieter es erlaubt) -->
           <div class="video-embed">
             <iframe
-              src="https://app.colossyan.com/embed/afff6164-0ff7-4733-bd27-2002c1e0511f"
+              src="https://app.colossyan.com/embed/afff6164-0ff7-4733-bd27-2002c1e0511f?autoplay=1&mute=1"
               title="Colossyan Video"
               loading="lazy"
               allow="autoplay; fullscreen; picture-in-picture"
@@ -72,80 +116,175 @@
               allowfullscreen
             ></iframe>
           </div>
+          <p class="muted" style="text-align:center;margin-top:.5rem">Falls das Autoplay blockiert ist, bitte einmal klicken.</p>
         </div>
       </div>
-      <svg class="shape" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0,64L48,53.3C96,43,192,21,288,26.7C384,32,480,64,576,85.3C672,107,768,117,864,106.7C960,96,1056,64,1152,53.3C1248,43,1344,53,1392,58.7L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path>
-      </svg>
     </section>
 
     <section id="about" class="section">
-      <div class="container about">
-        <img class="avatar" src="assets/profile.jpg" width="128" height="128" alt="Portrait Platzhalter" />
-        <div>
-          <h2>Über mich</h2>
-          <p>
-            Ich bin Max Mustermann, Frontend‑Enthusiast aus Deutschland. Ich mag schnelle Ladezeiten, klare Informationsarchitektur
-            und einfache Wartbarkeit. Am liebsten arbeite ich mit HTML, CSS und Vanilla JavaScript.
-          </p>
-          <ul class="tags">
-            <li>HTML</li>
-            <li>CSS</li>
-            <li>JavaScript</li>
-            <li>Accessibility</li>
-            <li>Performance</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <section id="services" class="section alt">
       <div class="container">
-        <h2>Leistungen</h2>
-        <div class="grid three">
-          <article class="feature">
-            <div class="icon">⚡</div>
-            <h3>Schnelle Websites</h3>
-            <p>Leichtgewichtig, ohne unnötige Abhängigkeiten – für starke Core Web Vitals und SEO.</p>
-          </article>
-          <article class="feature">
-            <div class="icon">🎨</div>
-            <h3>Sauberes Design</h3>
-            <p>Klarer Look, gute Lesbarkeit, sinnvolle Abstände – Nutzerfokus statt Schnickschnack.</p>
-          </article>
-          <article class="feature">
-            <div class="icon">🔒</div>
-            <h3>Einfach & Wartbar</h3>
-            <p>Strukturierter Code, semantisches HTML und verständliche CSS‑Variablen.</p>
-          </article>
-        </div>
+        <h2>Über mich</h2>
+        <p>Ich bin Max Mustermann, Frontend‑Enthusiast aus Deutschland. Ich mag schnelle Ladezeiten, klare Informationsarchitektur
+        und einfache Wartbarkeit. Am liebsten arbeite ich mit HTML, CSS und Vanilla JavaScript.</p>
       </div>
     </section>
 
-    <section id="projects" class="section">
+    <section id="projects" class="section alt">
       <div class="container">
         <h2>Projekte</h2>
-        <div class="grid three">
-          <article class="card">
-            <img src="assets/thumb-1.jpg" alt="Landingpage Starter" />
-            <div class="card-body">
-              <h3>Landingpage Starter</h3>
-              <p>Ein moderner One‑Pager‑Starter mit Grid, Light/Dark‑Mode und klarer Typografie.</p>
-              <div class="card-actions">
-                <a class="btn small" href="#" target="__blank" rel="noopener">Live‑Demo</a>
-                <a class="btn small ghost" href="#" target="__blank" rel="noopener">Code</a>
-              </div>
-            </div>
-          </article>
-          <article class="card">
-            <img src="assets/thumb-2.jpg" alt="Mini Komponenten" />
-            <div class="card-body">
-              <h3>Mini Komponenten</h3>
-              <p>Vanilla‑JS‑Snippets: Akkordeon, Tabs & Modal, ohne Framework‑Ballast.</p>
-              <div class="card-actions">
-                <a class="btn small" href="#" target="__blank" rel="noopener">Live‑Demo</a>
-                <a class="btn small ghost" href="#" target="__blank" rel="noopener">Code</a>
-              </div>
-            </div>
-          </article>
-          <article class="card">
+        <p class="muted">Hier stehen deine öffentlichen Projekte.</p>
+      </div>
+    </section>
+
+    <!-- 🔒 GESCHÜTZTER BEREICH – erst sichtbar nach korrektem Passwort -->
+    <section id="protected" class="section" aria-labelledby="protected-heading" hidden>
+      <div class="container">
+        <h2 id="protected-heading">🔒 Geschützter Bereich</h2>
+        <p>Dieser Inhalt ist nur nach Passworteingabe sichtbar. Du kannst hier interne Links, ein weiteres Video, Dokumente etc. platzieren.</p>
+
+        <!-- Beispiel: weiteres eingebettetes Video nur für eingeloggte Nutzer -->
+        <div class="video-embed" style="margin-top:1rem">
+          <iframe
+            src="https://app.colossyan.com/embed/afff6164-0ff7-4733-bd27-2002c1e0511f"
+            title="Internes Video"
+            loading="lazy"
+            allow="autoplay; fullscreen; picture-in-picture"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section alt">
+      <div class="container">
+        <h2>Kontakt</h2>
+        <p>Am einfachsten erreichst du mich per E‑Mail: <a href="mailto:max.mustermann@example.com">max.mustermann@example.com</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" style="border-top:1px solid var(--border,#e6e8f0);padding:1rem 0">
+    <div class="container" style="display:flex;justify-content:space-between;align-items:center">
+      <span>© <span id="year"></span> Max Mustermann</span>
+      <div class="row">
+        <a href="https://github.com/USERNAME">GitHub</a>
+        <a href="https://www.linkedin.com/in/USERNAME">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- 🔐 Passwort-Gate Overlay (erscheint, bis das richtige Passwort eingegeben wurde) -->
+  <div id="gate" class="gate" role="dialog" aria-modal="true" aria-labelledby="gate-title">
+    <div class="gate-card">
+      <h1 id="gate-title">Geschützter Bereich</h1>
+      <p class="muted">Bitte Passwort eingeben, um die Inhalte freizuschalten.</p>
+
+      <form id="gate-form" class="field" autocomplete="off">
+        <label for="gate-pass">Passwort</label>
+        <input id="gate-pass" type="password" placeholder="Passwort" required autocomplete="current-password" />
+        <div class="row">
+          <button class="btn primary" type="submit">Freischalten</button>
+          <button class="btn" type="button" id="gate-cancel" aria-label="Overlay schließen (Inhalte bleiben gesperrt)">Abbrechen</button>
+        </div>
+        <div id="gate-error" class="error" role="status" aria-live="polite">Falsches Passwort.</div>
+      </form>
+
+      <p class="muted" style="margin-top:.75rem">
+        Hinweis: Für echten Schutz vor unbefugtem Zugriff sollten sensible Inhalte nicht im Repo liegen,
+        sondern aus einem Backend/Storage mit Auth‑Regeln geladen werden.
+      </p>
+    </div>
+  </div>
+
+  <noscript>
+    <div style="padding:1rem;background:#fee;border-top:3px solid #c00;color:#600">
+      JavaScript ist deaktiviert. Der geschützte Bereich bleibt verborgen.
+    </div>
+  </noscript>
+
+  <script>
+    // Jahr im Footer
+    (function(){ var y=document.getElementById('year'); if(y) y.textContent = new Date().getFullYear(); })();
+
+    // Smooth Scroll (optional)
+    (function(){
+      for(const a of document.querySelectorAll('a[href^="#"]')){
+        a.addEventListener('click', e=>{
+          const id=a.getAttribute('href').slice(1);
+          const el=document.getElementById(id);
+          if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth',block:'start'}); }
+        });
+      }
+    })();
+
+    // Theme Toggle (Light/Dark)
+    (function(){
+      const root=document.documentElement, btn=document.getElementById('themeToggle'), KEY='mm-theme';
+      const pref=localStorage.getItem(KEY); if(pref==='dark') root.setAttribute('data-theme','dark');
+      const setIcon=()=>{ if(btn) btn.textContent = root.getAttribute('data-theme')==='dark' ? '☀️' : '🌙'; };
+      setIcon();
+      btn?.addEventListener('click', ()=>{
+        const isDark = root.getAttribute('data-theme')==='dark';
+        if(isDark){ root.removeAttribute('data-theme'); localStorage.setItem(KEY,'light'); }
+        else { root.setAttribute('data-theme','dark'); localStorage.setItem(KEY,'dark'); }
+        btn.setAttribute('aria-pressed', String(!isDark)); setIcon();
+      });
+    })();
+
+    // 🔐 Passwort-Gate (Client-seitig, "light protection")
+    (function(){
+      const gate = document.getElementById('gate');
+      const form = document.getElementById('gate-form');
+      const pass = document.getElementById('gate-pass');
+      const err  = document.getElementById('gate-error');
+      const cancelBtn = document.getElementById('gate-cancel');
+      const protectedSection = document.getElementById('protected');
+
+      // DEMO: SHA-256 Hash für "DemoPasswort!2026"
+      // Bitte ersetzen – siehe Anleitung unten.
+      const HASH_HEX = "e2a54b7b0e3f04cb33f2450bd9ca80ce8fbcc1450f3b739a7cf6cf3d81db0b2a";
+
+      // Bereits freigeschaltet?
+      if (sessionStorage.getItem('gate_ok') === '1') {
+        gate.classList.add('hidden');
+        protectedSection?.removeAttribute('hidden');
+      }
+
+      async function sha256Hex(str){
+        const enc = new TextEncoder().encode(str);
+        const buf = await crypto.subtle.digest('SHA-256', enc);
+        return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('');
+      }
+
+      form?.addEventListener('submit', async (e)=>{
+        e.preventDefault();
+        err.style.display = 'none';
+        try {
+          const h = await sha256Hex(pass.value);
+          if (h === HASH_HEX) {
+            sessionStorage.setItem('gate_ok','1');
+            gate.classList.add('hidden');
+            gate.setAttribute('aria-hidden','true');
+            protectedSection?.removeAttribute('hidden');
+            // Sicherheitshalber das Passwortfeld leeren:
+            pass.value = "";
+          } else {
+            err.style.display = 'block';
+            pass.select();
+          }
+        } catch (ex){
+          err.textContent = 'Fehler bei der Prüfung. Bitte neu laden.';
+          err.style.display = 'block';
+        }
+      });
+
+      cancelBtn?.addEventListener('click', ()=>{
+        // Overlay schließen, Inhalte bleiben gesperrt
+        gate.classList.add('hidden');
+        gate.setAttribute('aria-hidden','true');
+      });
+    })();
+  </script>
+</body>
+</html>
