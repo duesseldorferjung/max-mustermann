@@ -5,23 +5,134 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Max Mustermann – Webentwickler</title>
   <meta name="description" content="Portfolio, Projekte, Video und Kontakt von Max Mustermann – Webentwickler für performante, klare Websites.">
-  <!-- Falls deine Seite bereits styles.css nutzt, bleibt das bestehen: -->
+  <link rel="icon" href="assets/favicon.png">
   <link rel="stylesheet" href="styles.css" />
   <style>
-    /* Zusätzliche, sichere Styles nur für das Video – kollidiert nicht mit bestehendem CSS */
-    .video-section .video-embed { position: relative; width: 100%; max-width: 900px; margin: 0 auto; aspect-ratio: 16 / 9; border-radius: 16px; overflow: hidden; border: 1px solid var(--border, #e6e8f0); box-shadow: 0 10px 24px rgba(0,0,0,.08); }
-    .video-section .video-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
-    @supports not (aspect-ratio: 16 / 9) { .video-section .video-embed { height: 0; padding-bottom: 56.25%; } }
-    .muted { color: var(--muted, #5d667a); }
-    .container { max-width: 1100px; margin: 0 auto; padding: 0 1.25rem; }
-    .section { padding: 2rem 0; }
-    h2 { font-size: 1.6rem; margin: 0 0 1rem; }
+    /* Zusatz-Styles für die Video-Sektion, konfliktarm */
+    .video-section .video-embed{position:relative;width:100%;max-width:900px;margin:0 auto;aspect-ratio:16/9;border-radius:16px;overflow:hidden;border:1px solid var(--border, #e6e8f0);box-shadow:0 10px 24px var(--shadow, rgba(0,0,0,.08));}
+    .video-section .video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0;display:block}
+    @supports not (aspect-ratio:16/9){.video-section .video-embed{height:0;padding-bottom:56.25%}}
   </style>
 </head>
 <body>
-  <main>
-    <!-- Dein bestehender Inhalt bleibt unverändert. Dieses neue Video-Segment kannst du frei platzieren. -->
-    <section class="section video-section" id="video" aria-labelledby="video-heading">
+  <header class="site-header">
+    <div class="container nav">
+      <a href="#top" class="logo" aria-label="Startseite">MM</a>
+      <nav class="main-nav" aria-label="Hauptnavigation">
+        <a href="#about">Über mich</a>
+        <a href="#services">Leistungen</a>
+        <a href="#projects">Projekte</a>
+        <a href="#video">Video</a>
+        <a href="#contact">Kontakt</a>
+      </nav>
+      <button id="themeToggle" class="btn icon" aria-pressed="false" aria-label="Design umschalten (Hell/Dunkel)">🌙</button>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <h1>Hallo, ich bin <span class="accent">Max Mustermann</span>.</h1>
+          <p class="lead">Ich entwickle klare, performante Websites & kleine Web‑Apps – mit Fokus auf Nutzererlebnis und sauberen Code.</p>
+          <div class="cta">
+            <a class="btn primary" href="#projects">Projekte ansehen</a>
+            <a class="btn" href="assets/lebenslauf.pdf" target="_blank" rel="noopener">Lebenslauf</a>
+          </div>
+        </div>
+        <div class="hero-media">
+          <img src="assets/hero.jpg" alt="Abstraktes Headerbild" />
+        </div>
+      </div>
+      <svg class="shape" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0,64L48,53.3C96,43,192,21,288,26.7C384,32,480,64,576,85.3C672,107,768,117,864,106.7C960,96,1056,64,1152,53.3C1248,43,1344,53,1392,58.7L1440,64L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container about">
+        <img class="avatar" src="assets/profile.jpg" width="128" height="128" alt="Portrait Platzhalter" />
+        <div>
+          <h2>Über mich</h2>
+          <p>
+            Ich bin Max Mustermann, Frontend‑Enthusiast aus Deutschland. Ich mag schnelle Ladezeiten, klare Informationsarchitektur
+            und einfache Wartbarkeit. Am liebsten arbeite ich mit HTML, CSS und Vanilla JavaScript.
+          </p>
+          <ul class="tags">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+            <li>Accessibility</li>
+            <li>Performance</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="section alt">
+      <div class="container">
+        <h2>Leistungen</h2>
+        <div class="grid three">
+          <article class="feature">
+            <div class="icon">⚡</div>
+            <h3>Schnelle Websites</h3>
+            <p>Leichtgewichtig, ohne unnötige Abhängigkeiten – für starke Core Web Vitals und SEO.</p>
+          </article>
+          <article class="feature">
+            <div class="icon">🎨</div>
+            <h3>Sauberes Design</h3>
+            <p>Klarer Look, gute Lesbarkeit, sinnvolle Abstände – Nutzerfokus statt Schnickschnack.</p>
+          </article>
+          <article class="feature">
+            <div class="icon">🔒</div>
+            <h3>Einfach & Wartbar</h3>
+            <p>Strukturierter Code, semantisches HTML und verständliche CSS‑Variablen.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <div class="container">
+        <h2>Projekte</h2>
+        <div class="grid three">
+          <article class="card">
+            <img src="assets/thumb-1.jpg" alt="Landingpage Starter" />
+            <div class="card-body">
+              <h3>Landingpage Starter</h3>
+              <p>Ein moderner One‑Pager‑Starter mit Grid, Light/Dark‑Mode und klarer Typografie.</p>
+              <div class="card-actions">
+                <a class="btn small" href="#" target="_blank" rel="noopener">Live‑Demo</a>
+                <a class="btn small ghost" href="#" target="_blank" rel="noopener">Code</a>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <img src="assets/thumb-2.jpg" alt="Mini Komponenten" />
+            <div class="card-body">
+              <h3>Mini Komponenten</h3>
+              <p>Vanilla‑JS‑Snippets: Akkordeon, Tabs & Modal, ohne Framework‑Ballast.</p>
+              <div class="card-actions">
+                <a class="btn small" href="#" target="_blank" rel="noopener">Live‑Demo</a>
+                <a class="btn small ghost" href="#" target="_blank" rel="noopener">Code</a>
+              </div>
+            </div>
+          </article>
+          <article class="card">
+            <img src="assets/thumb-3.jpg" alt="Style Sandbox" />
+            <div class="card-body">
+              <h3>Style Sandbox</h3>
+              <p>Farbpaletten & Typo live testen – direkt im Browser, ohne Build‑Step.</p>
+              <div class="card-actions">
+                <a class="btn small" href="#" target="_blank" rel="noopener">Live‑Demo</a>
+                <a class="btn small ghost" href="#" target="_blank" rel="noopener">Code</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- NEU: Video-Sektion als Teil der Homepage -->
+    <section class="section alt video-section" id="video" aria-labelledby="video-heading">
       <div class="container">
         <h2 id="video-heading">Video</h2>
         <div class="video-embed">
@@ -40,6 +151,29 @@
         <p class="muted">Hinweis: Das Video wird extern von Colossyan geladen.</p>
       </div>
     </section>
+
+    <section id="contact" class="section alt">
+      <div class="container">
+        <h2>Kontakt</h2>
+        <p>Am einfachsten erreichst du mich per E‑Mail:</p>
+        <p>
+          <a class="btn primary" href="mailto:max.mustermann@example.com">max.mustermann@example.com</a>
+        </p>
+        <p class="muted">Ersetze die Adresse in <code>index.html</code> mit deiner echten E‑Mail.</p>
+      </div>
+    </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="container footer">
+      <span>© <span id="year"></span> Max Mustermann</span>
+      <div class="socials">
+        <a href="https://github.com/USERNAME" aria-label="GitHub">GitHub</a>
+        <a href="https://www.linkedin.com/in/USERNAME" aria-label="LinkedIn">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
